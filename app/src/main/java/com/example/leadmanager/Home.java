@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private String isLoggedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,18 +33,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_open, R.string.nav_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-//        TextView usr = (TextView) findViewById(R.id.usr);
-//        SessionManagement sessionManagement = new SessionManagement(Home.this);
-//        String isLoggedIn = sessionManagement.getSession();
-//        usr.setText(isLoggedIn);
+
+        SessionManagement sessionManagement = new SessionManagement(Home.this);
+        isLoggedIn = sessionManagement.getSession();
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_profile:
+                ProfileFragment profileFragment= ProfileFragment.newInstance(isLoggedIn);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                        profileFragment).commit();
                 break;
             case R.id.nav_logout:
                 onLogout();
