@@ -5,13 +5,22 @@
       <map>
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/botton_bg.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/edittxt_bg.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/ic_account.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/ic_contact.xml" value="0.18888888888888888" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/ic_lead.xml" value="0.18888888888888888" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/ic_opportunity.xml" value="0.18888888888888888" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/logout.xml" value="0.2203125" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/vie_bg.xml" value="0.1" />
-        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/activity_home.xml" value="0.22" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_profile.xml" value="0.18" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_account.xml" value="0.18" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_contact.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_lead.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_opportunity.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/login.xml" value="0.22" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/nav_header.xml" value="0.25" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/menu/bottom_navigation.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/menu/drawer_menu.xml" value="0.22" />
       </map>
     </option>

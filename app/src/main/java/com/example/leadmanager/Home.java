@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,7 +39,39 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         SessionManagement sessionManagement = new SessionManagement(Home.this);
         isLoggedIn = sessionManagement.getSession();
 
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(navListener);
+
+        AccountFragment accountFragment = AccountFragment.newInstance(isLoggedIn);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,accountFragment).commit();
     }
+
+    private BottomNavigationView.OnItemSelectedListener navListener =
+            new BottomNavigationView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+                    SessionManagement sessionManagement = new SessionManagement(Home.this);
+                    String username = sessionManagement.getSession();
+                    switch (item.getItemId()){
+                        case R.id.nav_account:
+                            selectedFragment = AccountFragment.newInstance(username);
+                            break;
+                        case R.id.nav_contact:
+                            selectedFragment = new ContactFragment();
+                            break;
+                        case R.id.nav_opportunity:
+                            selectedFragment = new OpportunityFragment();
+                            break;
+                        case R.id.nav_lead:
+                            selectedFragment = new LeadFragment();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).addToBackStack(null).commit();
+                    return true;
+                }
+            };
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -45,7 +79,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.nav_profile:
                 ProfileFragment profileFragment= ProfileFragment.newInstance(isLoggedIn);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        profileFragment).commit();
+                        profileFragment).addToBackStack(null).commit();
                 break;
             case R.id.nav_logout:
                 onLogout();

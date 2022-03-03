@@ -1,5 +1,7 @@
 package com.example.leadmanager;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -13,5 +15,6 @@ public interface UserService {
     @GET("get_user/{id}/")
     Call<UserInfo> getUser(@Path("id") String usr);
 
-
+    @GET("get_account/{id}")
+    Call<List<AccountResponse>> getAccount(@Path("id") String usr);
 }

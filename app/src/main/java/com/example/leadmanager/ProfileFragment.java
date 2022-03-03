@@ -27,7 +27,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_USR="usr";
     private String usr;
     private TextView txt;
-    private EditText username,firstname,lastname,email,phone;
+    private TextView username,firstname,lastname,email,phone;
 
     public static ProfileFragment newInstance(String user){
         ProfileFragment profileFragment= new ProfileFragment();
