@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:layout_marginBottom="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        >
+
+        <TextView
+            android:id="@+id/acc_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account Name"
+            android:paddingLeft="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/acc_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account ID"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/acc_name" />
+
+        <TextView
+            android:id="@+id/acc_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@+id/acc_id"
+            />
+
+        <TextView
+            android:id="@+id/acc_industry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Industry"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@+id/acc_type"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
