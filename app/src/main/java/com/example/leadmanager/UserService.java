@@ -17,4 +17,7 @@ public interface UserService {
 
     @GET("get_account/{id}")
     Call<List<AccountResponse>> getAccount(@Path("id") String usr);
+
+    @POST("save_account/")
+    Call<ApiStatus> createAccount(@Body AccountRequest accountRequest);
 }

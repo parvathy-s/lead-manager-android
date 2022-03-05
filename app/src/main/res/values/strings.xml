@@ -2,4 +2,35 @@
     <string name="app_name">Lead Manager</string>
     <string name="nav_open">Open navigation drawer</string>
     <string name="nav_close">Close navigation drawer</string>
+    <string-array name="account_type">
+        <item>Prospect</item>
+        <item>Customer - Direct</item>
+        <item>Customer - Channel</item>
+        <item>Channel Partner / Reseller</item>
+        <item>Installation Partner</item>
+        <item>Technology Partner</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="account_industry">
+        <item>Agriculture</item>
+        <item>Apparel</item>
+        <item>Banking</item>
+        <item>Biotechnology</item>
+        <item>Chemicals</item>
+        <item>Communications</item>
+        <item>Construction</item>
+        <item>Consulting</item>
+        <item>Education</item>
+        <item>Electronics</item>
+        <item>Energy</item>
+        <item>Entertainment</item>
+        <item>Engineering</item>
+        <item>Environmental</item>
+        <item>Finance</item>
+        <item>Food &amp; Beverage</item>
+        <item>Government</item>
+        <item>Healthcare</item>
+        <item>Hospitality</item>
+        <item>Other</item>
+    </string-array>
 </resources>
