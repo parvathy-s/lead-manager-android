@@ -4,15 +4,102 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ContactFragment extends Fragment {
+    Button save;
+    private static final String ARG_USR="usr";
+    private String usr;
+    private RecyclerView recyclerView;
+    private ContactAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+    public static ContactFragment newInstance(String user){
+        ContactFragment contactFragment= new ContactFragment();
+        Bundle args= new Bundle();
+        args.putString(ARG_USR,user);
+        contactFragment.setArguments(args);
+        System.out.println(user);
+        return contactFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_contact,container,false);
+        View v =inflater.inflate(R.layout.fragment_contact,container,false);
+        if(getArguments() != null) {
+            usr = getArguments().getString(ARG_USR);
+        }
+        save = v.findViewById(R.id.new_con);
+        recyclerView = v.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+
+        getDetails();
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container,new ContactAdd());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+        return v;
+    }
+
+    private void getDetails(){
+        ArrayList<ContactResponse> contactItems=new ArrayList<>();
+        Call<List<ContactResponse>> listCall = ApiClient.getUserService().getContact(usr);
+        listCall.enqueue(new Callback<List<ContactResponse>>() {
+            @Override
+            public void onResponse(Call<List<ContactResponse>> call, Response<List<ContactResponse>> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getActivity(),response.code(),Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                List<ContactResponse> contactResponses = response.body();
+                for(ContactResponse contactResponse: contactResponses){
+                    contactItems.add(new ContactResponse(contactResponse.getC_extd__c(),contactResponse.getCname(),contactResponse.getAname(),contactResponse.getTitle()));
+                }
+                adapter = new ContactAdapter(contactItems);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new ContactAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        String id =contactItems.get(position).getC_extd__c();
+                        ContactUpdate contactUpdate = ContactUpdate.newInstance(id);
+                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container,contactUpdate);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<ContactResponse>> call, Throwable t) {
+                Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

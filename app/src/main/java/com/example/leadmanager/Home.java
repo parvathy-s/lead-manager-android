@@ -58,7 +58,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             selectedFragment = AccountFragment.newInstance(username);
                             break;
                         case R.id.nav_contact:
-                            selectedFragment = new ContactFragment();
+                            selectedFragment = ContactFragment.newInstance(username);
                             break;
                         case R.id.nav_opportunity:
                             selectedFragment = new OpportunityFragment();

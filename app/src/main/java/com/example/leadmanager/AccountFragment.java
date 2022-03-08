@@ -27,7 +27,7 @@ public class AccountFragment extends Fragment {
     private static final String ARG_USR="usr";
     private String usr;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private AccountAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button add;
 
@@ -60,7 +60,6 @@ public class AccountFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,new AccountAdd());
                 fragmentTransaction.addToBackStack(null);
-                Toast.makeText(getActivity(),"Calling fragment",Toast.LENGTH_LONG).show();
                 fragmentTransaction.commit();
             }
         });
@@ -87,6 +86,18 @@ public class AccountFragment extends Fragment {
                 adapter = new AccountAdapter(accountItems);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new AccountAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        String id =accountItems.get(position).getId();
+                        AccountUpdate accountUpdate = AccountUpdate.newInstance(id);
+                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container,accountUpdate);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
             }
 
             @Override

@@ -13,6 +13,16 @@ import java.util.ArrayList;
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountViewHolder> {
 
     private ArrayList<AccountItem> accountItems;
+    private OnItemClickListener mlistener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mlistener = listener;
+    }
+
     public static class AccountViewHolder extends RecyclerView.ViewHolder{
 
         public TextView acc_name;
@@ -20,12 +30,24 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
         public TextView acc_type;
         public TextView acc_industry;
 
-        public AccountViewHolder(@NonNull View itemView) {
+        public AccountViewHolder(@NonNull View itemView,final OnItemClickListener listener) {
             super(itemView);
             acc_name = itemView.findViewById(R.id.acc_name);
             acc_id = itemView.findViewById(R.id.acc_id);
             acc_type = itemView.findViewById(R.id.acc_type);
             acc_industry = itemView.findViewById(R.id.acc_industry);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -37,7 +59,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
     @Override
     public AccountViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_item, parent, false);
-        AccountViewHolder avh = new AccountViewHolder(v);
+        AccountViewHolder avh = new AccountViewHolder(v,mlistener);
         return avh;
     }
 

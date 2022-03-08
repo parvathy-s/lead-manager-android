@@ -31,6 +31,18 @@
         <item>Government</item>
         <item>Healthcare</item>
         <item>Hospitality</item>
+        <item>Insurance</item>
+        <item>Machinery</item>
+        <item>Manufacturing</item>
+        <item>Media</item>
+        <item>Not For Profit</item>
+        <item>Recreation</item>
+        <item>Retail</item>
+        <item>Shipping</item>
+        <item>Technology</item>
+        <item>Telecommunications</item>
+        <item>Transportation</item>
+        <item>Utilities</item>
         <item>Other</item>
     </string-array>
 </resources>
