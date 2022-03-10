@@ -45,4 +45,16 @@
         <item>Utilities</item>
         <item>Other</item>
     </string-array>
+    <string-array name="stage">
+        <item>Prospecting</item>
+        <item>Qualification</item>
+        <item>Needs Analysis</item>
+        <item>Value Proposition</item>
+        <item>Id. Decision Makers</item>
+        <item>Perception Analysis</item>
+        <item>Proposal/Price Quote</item>
+        <item>Negotiation/Review</item>
+        <item>Closed Won</item>
+        <item>Closed Lost</item>
+    </string-array>
 </resources>

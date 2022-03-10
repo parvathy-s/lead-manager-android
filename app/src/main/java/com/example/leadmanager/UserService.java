@@ -50,4 +50,23 @@ public interface UserService {
 
     @POST("delete_contact/{id}")
     Call<ApiStatus> deleteContact(@Path("id") String id);
+
+    //opportunity
+    @GET("get_opportunity/{id}")
+    Call<List<OpportunityResponse>> getOpportunity(@Path("id") String usr);
+
+    @GET("contact_list/{id}")
+    Call<List<ContactAccount>> contactList(@Path("id") String ac);
+
+    @POST("save_opportunity/")
+    Call<ApiStatus> createOpportunity(@Body OpportunityRequest opportunityRequest);
+
+    @GET("opportunity_info/{id}")
+    Call<OpportunityInfo> opportunityDetails(@Path("id") String id);
+
+    @PUT("update_opportunity/{id}")
+    Call<ApiStatus> updateOpportunity(@Path("id") String is, @Body OpportunityRequest opportunityRequest);
+
+    @POST("delete_opportunity/{id}")
+    Call<ApiStatus> deleteOpportunity(@Path("id") String id);
 }
