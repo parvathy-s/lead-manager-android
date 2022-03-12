@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountViewHolder> implements Filterable {
+public class LeadAdapter extends RecyclerView.Adapter<LeadAdapter.LeadViewHolder> implements Filterable {
 
-    private ArrayList<AccountItem> accountItems;
-    private ArrayList<AccountItem> accountListFull;
+    private ArrayList<LeadResponse> leadItems;
+    private ArrayList<LeadResponse> leadListFull;
     private OnItemClickListener mlistener;
 
     public interface OnItemClickListener{
@@ -27,19 +28,19 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
         mlistener = listener;
     }
 
-    public static class AccountViewHolder extends RecyclerView.ViewHolder{
+    public static class LeadViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView acc_name;
-        public TextView acc_id;
-        public TextView acc_type;
-        public TextView acc_industry;
+        public TextView lead_name;
+        public TextView lead_id;
+        public TextView lead_company;
+        public TextView lead_status;
 
-        public AccountViewHolder(@NonNull View itemView,final OnItemClickListener listener) {
+        public LeadViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-            acc_name = itemView.findViewById(R.id.acc_name);
-            acc_id = itemView.findViewById(R.id.acc_id);
-            acc_type = itemView.findViewById(R.id.acc_type);
-            acc_industry = itemView.findViewById(R.id.acc_industry);
+            lead_name = itemView.findViewById(R.id.lead_name);
+            lead_id = itemView.findViewById(R.id.lead_id);
+            lead_company = itemView.findViewById(R.id.lead_company);
+            lead_status = itemView.findViewById(R.id.lead_status);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,48 +56,47 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
         }
     }
 
-    public AccountAdapter(ArrayList<AccountItem> accountItems){
-
-        this.accountItems = accountItems;
-        accountListFull = new ArrayList<>(accountItems);
+    public LeadAdapter(ArrayList<LeadResponse> leadItems){
+        this.leadItems = leadItems;
+        leadListFull = new ArrayList<>(leadItems);
     }
 
     @NonNull
     @Override
-    public AccountViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_item, parent, false);
-        AccountViewHolder avh = new AccountViewHolder(v,mlistener);
-        return avh;
+    public LeadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.lead_item, parent, false);
+        LeadViewHolder lvh = new LeadViewHolder(v,mlistener);
+        return lvh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AccountViewHolder holder, int position) {
-        AccountItem currentItem = accountItems.get(position);
-        holder.acc_name.setText(currentItem.getName());
-        holder.acc_id.setText(currentItem.getId());
-        holder.acc_type.setText(currentItem.getType());
-        holder.acc_industry.setText(currentItem.getIndustry());
+    public void onBindViewHolder(@NonNull LeadViewHolder holder, int position) {
+        LeadResponse currentItem = leadItems.get(position);
+        holder.lead_name.setText(currentItem.getName());
+        holder.lead_id.setText(currentItem.getL_extid__c());
+        holder.lead_company.setText(currentItem.getCompany());
+        holder.lead_status.setText(currentItem.getStatus());
     }
 
     @Override
     public int getItemCount() {
-        return accountItems.size();
+        return leadItems.size();
     }
 
     @Override
     public Filter getFilter() {
-        return accountFilter;
+        return leadFilter;
     }
 
-    private Filter accountFilter = new Filter() {
+    private Filter leadFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<AccountItem> filteredList= new ArrayList<>();
+            ArrayList<LeadResponse> filteredList= new ArrayList<>();
             if(constraint == null || constraint.length() == 0){
-                filteredList.addAll(accountListFull);
+                filteredList.addAll(leadListFull);
             } else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for ( AccountItem item: accountListFull){
+                for ( LeadResponse item: leadListFull){
                     if(item.getName().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
@@ -111,8 +111,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            accountItems.clear();
-            accountItems.addAll((List) results.values);
+            leadItems.clear();
+            leadItems.addAll((List) results.values);
             notifyDataSetChanged();
         }
     };

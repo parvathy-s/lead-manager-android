@@ -69,4 +69,20 @@ public interface UserService {
 
     @POST("delete_opportunity/{id}")
     Call<ApiStatus> deleteOpportunity(@Path("id") String id);
+
+    //lead
+    @GET("get_lead/{id}")
+    Call<List<LeadResponse>> getLead(@Path("id") String usr);
+
+    @POST("save_lead")
+    Call<ApiStatus> createLead(@Body LeadRequest request);
+
+    @GET("lead_info/{id}")
+    Call<LeadRequest> leadDetails(@Path("id") String id);
+
+    @PUT("update_lead/{id}")
+    Call<ApiStatus> updateLead(@Path("id") String id, @Body LeadRequest request);
+
+    @POST("delete_lead/{id}")
+    Call<ApiStatus> deleteLead(@Path("id") String id);
 }

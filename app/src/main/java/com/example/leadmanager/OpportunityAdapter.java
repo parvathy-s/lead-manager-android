@@ -3,16 +3,20 @@ package com.example.leadmanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.OpportunityViewHolder> {
+public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.OpportunityViewHolder> implements Filterable {
 
     private ArrayList<OpportunityResponse> opportunityItems;
+    private ArrayList<OpportunityResponse> opportunityListFull;
     private OnItemClickListener mlistener;
 
     public interface OnItemClickListener{
@@ -53,6 +57,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     public OpportunityAdapter(ArrayList<OpportunityResponse> opportunityItems){
         this.opportunityItems = opportunityItems;
+        opportunityListFull = new ArrayList<>(opportunityItems);
     }
 
     @NonNull
@@ -76,4 +81,37 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public int getItemCount() {
         return opportunityItems.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return opportunityFilter;
+    }
+
+    private Filter opportunityFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<OpportunityResponse> filteredList= new ArrayList<>();
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(opportunityListFull);
+            } else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for ( OpportunityResponse item: opportunityListFull){
+                    if(item.getOname().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results= new FilterResults();
+            results.values= filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            opportunityItems.clear();
+            opportunityItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

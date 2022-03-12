@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         lname = jsonObject.getString("lastname");
                         email = jsonObject.getString("email");
                         phone = jsonObject.getString("phone");
-                        Toast.makeText(MainActivity.this,usr+"\n"+fname+"\n"+lname+"\n"+email+"\n"+phone,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(MainActivity.this,usr+"\n"+fname+"\n"+lname+"\n"+email+"\n"+phone,Toast.LENGTH_LONG).show();
                         UserResponse user = new UserResponse();
                         user.setUsername(usr);
                         user.setFirstname(fname);

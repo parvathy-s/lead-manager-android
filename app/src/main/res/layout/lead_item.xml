@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:layout_marginBottom="6dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        >
+
+        <TextView
+            android:id="@+id/lead_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lead Name"
+            android:paddingLeft="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/lead_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lead ID"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/lead_name" />
+
+        <TextView
+            android:id="@+id/lead_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Company"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@+id/lead_id"
+            />
+
+        <TextView
+            android:id="@+id/lead_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:paddingLeft="15dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@+id/lead_company"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

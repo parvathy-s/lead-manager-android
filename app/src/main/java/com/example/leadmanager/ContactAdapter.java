@@ -3,16 +3,20 @@ package com.example.leadmanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> implements Filterable {
 
     private ArrayList<ContactResponse> contactItems;
+    private ArrayList<ContactResponse> contactListFull;
     private OnItemClickListener mlistener;
 
     public interface OnItemClickListener{
@@ -53,6 +57,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     public ContactAdapter(ArrayList<ContactResponse> contactItems){
         this.contactItems = contactItems;
+        contactListFull = new ArrayList<>(contactItems);
     }
 
     @NonNull
@@ -76,5 +81,39 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     public int getItemCount() {
         return contactItems.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return contactFilter;
+    }
+
+    private Filter contactFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<ContactResponse> filteredList= new ArrayList<>();
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(contactListFull);
+            } else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for ( ContactResponse item: contactListFull){
+                    if(item.getCname().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results= new FilterResults();
+            results.values= filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            contactItems.clear();
+            contactItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
 

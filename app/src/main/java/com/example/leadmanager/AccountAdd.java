@@ -93,7 +93,7 @@ public class AccountAdd extends Fragment implements AdapterView.OnItemSelectedLi
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Successfully saved",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Successfully saved, please wait for the changes to take effect",Toast.LENGTH_LONG).show();
                     fragmentTransaction.commit();
                 }
                 else {
