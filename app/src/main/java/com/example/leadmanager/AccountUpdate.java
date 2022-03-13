@@ -161,8 +161,14 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
                     try {
                         JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                         name.setText(jsonObject.getString("name"));
-                        phone.setText(jsonObject.getString("phone"));
-                        desc.setText(jsonObject.getString("description"));
+                        if(jsonObject.isNull("phone"))
+                            phone.setText("");
+                        else
+                            phone.setText(jsonObject.getString("phone"));
+                        if(jsonObject.isNull("description"))
+                            desc.setText("");
+                        else
+                            desc.setText(jsonObject.getString("description"));
                         int typepos = typeAdapter.getPosition(jsonObject.getString("type"));
                         System.out.println(typepos);
                         type.setSelection(typepos);

@@ -34,6 +34,7 @@ import retrofit2.Response;
 
 public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSelectedListener{
     private static final String ARG_ID="id";
+    int flag=0;
     Button update,del;
     Spinner account, contact, stage;
     EditText name,amt, close;
@@ -54,11 +55,7 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
         return opportunityUpdate;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getData();
-    }
+
 
     @Nullable
     @Override
@@ -87,7 +84,6 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
         stage.setAdapter(stageAdapter);
         stage.setOnItemSelectedListener(this);
 
-        setAccount();
         account.setOnItemSelectedListener(this);
         contact.setOnItemSelectedListener(this);
 
@@ -107,6 +103,7 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
             }
         });
 
+        setAccount();
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,6 +242,11 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
                     ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, cname);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     contact.setAdapter(dataAdapter);
+
+                    if(flag==0){
+                        getData();
+                        flag=1;
+                    }
                 }
                 else{
                     Toast.makeText(getActivity(),response.code(),Toast.LENGTH_LONG).show();
@@ -267,7 +269,10 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
                     try {
                         JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                         name.setText(jsonObject.getString("name"));
-                        amt.setText(jsonObject.getString("amount"));
+                        if(jsonObject.isNull("amount"))
+                            amt.setText("");
+                        else
+                            amt.setText(jsonObject.getString("amount"));
                         close.setText(jsonObject.getString("closedate"));
                         String stageid= jsonObject.getString("stagename");
                         String acid = jsonObject.getString("accountid");

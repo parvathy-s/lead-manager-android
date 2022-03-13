@@ -85,4 +85,10 @@ public interface UserService {
 
     @POST("delete_lead/{id}")
     Call<ApiStatus> deleteLead(@Path("id") String id);
+
+    @POST("convert_lead")
+    Call<ApiStatus> convertLead(@Body LeadConvertRequest request);
+
+    @PUT("convert_contact/{aname}/{cname}/{oname}/{lid}")
+    Call<ApiStatus> updateConverted(@Path("aname") String aname, @Path("cname") String cname, @Path("oname") String oname, @Path("lid") String lid);
 }

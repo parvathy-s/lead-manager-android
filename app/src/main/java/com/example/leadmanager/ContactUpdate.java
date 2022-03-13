@@ -202,8 +202,14 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
                         fname.setText(jsonObject.getString("firstname"));
                         lname.setText(jsonObject.getString("lastname"));
                         title.setText(jsonObject.getString("title"));
-                        phone.setText(jsonObject.getString("phone"));
-                        email.setText(jsonObject.getString("email"));
+                        if(jsonObject.isNull("phone"))
+                            phone.setText("");
+                        else
+                            phone.setText(jsonObject.getString("phone"));
+                        if(jsonObject.isNull("email"))
+                            email.setText("");
+                        else
+                            email.setText(jsonObject.getString("email"));
                         String acid = jsonObject.getString("accountid");
                         int pos = aid.indexOf(acid);
                         System.out.println(pos);

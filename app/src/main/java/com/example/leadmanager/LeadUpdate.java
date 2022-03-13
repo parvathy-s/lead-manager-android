@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedListener{
     private static final String ARG_ID="id";
-    Button update,del;
+    Button update,del,convert;
     Spinner status;
     EditText fname, lname, company, email, title;
     String isLoggedIn;
@@ -49,6 +49,7 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
         View v = inflater.inflate(R.layout.lead_update,container,false);
         update = v.findViewById(R.id.leadupdate);
         del = v.findViewById(R.id.leaddel);
+        convert = v.findViewById(R.id.leadconvert);
         fname = v.findViewById(R.id.lead_fname);
         lname = v.findViewById(R.id.lead_lname);
         company = v.findViewById(R.id.lead_company);
@@ -93,7 +94,11 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
                         request.setEmail(emailsel);
                         request.setTitle(titlesel);
                         request.setStatus(statussel);
-                        updateData(request);
+                        if(statussel.equals("Closed - Converted")){
+                            Toast.makeText(getActivity(),"Cannot update already converted leads",Toast.LENGTH_LONG).show();
+                        }
+                        else
+                            updateData(request);
                     } else
                         Toast.makeText(getActivity(), "Invalid email", Toast.LENGTH_SHORT).show();
                 }
@@ -107,6 +112,23 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
                 fragmentTransaction.replace(R.id.fragment_container,leadFragment);
                 fragmentTransaction.addToBackStack(null);
                 deleteData();
+            }
+        });
+
+        convert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(statussel.equals("Closed - Converted")){
+                    Toast.makeText(getActivity(),"Cannot update already converted leads",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    LeadConvert leadConvert= LeadConvert.newInstance(lextid);
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, leadConvert);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+
             }
         });
 
