@@ -316,13 +316,31 @@
             android:layout_marginRight="54dp"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="20dp"
-            android:text="Convert Lead"
+            android:text="Creat Objects"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintVertical_bias=".7"
             app:layout_constraintWidth_percent=".8"
             />
+
+        <Button
+            app:layout_constraintTop_toBottomOf="@+id/leadcon"
+            android:id="@+id/leadup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/botton_bg"
+            android:layout_marginRight="54dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="20dp"
+            android:text="Link Objects"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintVertical_bias=".7"
+            app:layout_constraintWidth_percent=".8"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

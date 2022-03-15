@@ -32,7 +32,8 @@ import retrofit2.Response;
 
 public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedListener{
     private static final String ARG_ID="id";
-    Button convert;
+    Button convert, update;
+    int flag =0;
     Spinner type, industry, stage;
     EditText aname, fname, lname, title, oname, closedate;
     String isLoggedIn;
@@ -57,6 +58,7 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
         View v = inflater.inflate(R.layout.lead_convert,container,false);
 
         convert = v.findViewById(R.id.leadcon);
+        update = v.findViewById(R.id.leadup);
         type = v.findViewById(R.id.leadcon_type);
         industry = v.findViewById(R.id.leadcon_industry);
         stage = v.findViewById(R.id.leadcon_stage);
@@ -116,44 +118,62 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
         convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fnamesel = fname.getText().toString();
-                lnamesel = lname.getText().toString();
-                namesel = fnamesel + " "+ lnamesel;
-                anamesel= aname.getText().toString();
-                onamesel= oname.getText().toString();
-                titlesel = title.getText().toString();
-                closesel = closedate.getText().toString();
-
-                if(namesel.length() == 0 || anamesel.length() == 0 || onamesel.length() == 0 || titlesel.length() == 0 || closesel.length() == 0)
-                    Toast.makeText(getActivity(),"Enter all values",Toast.LENGTH_LONG).show();
+                if(flag == 1 ){
+                    Toast.makeText(getActivity(),"Already created",Toast.LENGTH_LONG).show();
+                }
                 else {
-                    LeadConvertRequest request= new LeadConvertRequest();
-                    request.setAname(anamesel);
-                    request.setAtype(typesel);
-                    request.setAindustry(industrysel);
-                    request.setCfname(fnamesel);
-                    request.setClname(lnamesel);
-                    request.setCname(namesel);
-                    request.setCtitle(titlesel);
-                    request.setOname(onamesel);
-                    request.setOclosedate(closesel);
-                    request.setOstagename(stagesel);
-                    convert(request);
+                    fnamesel = fname.getText().toString();
+                    lnamesel = lname.getText().toString();
+                    namesel = fnamesel + " " + lnamesel;
+                    anamesel = aname.getText().toString();
+                    onamesel = oname.getText().toString();
+                    titlesel = title.getText().toString();
+                    closesel = closedate.getText().toString();
+
+                    if (namesel.length() == 0 || anamesel.length() == 0 || onamesel.length() == 0 || titlesel.length() == 0 || closesel.length() == 0)
+                        Toast.makeText(getActivity(), "Enter all values", Toast.LENGTH_LONG).show();
+                    else {
+                        LeadConvertRequest request = new LeadConvertRequest();
+                        request.setAname(anamesel);
+                        request.setAtype(typesel);
+                        request.setAindustry(industrysel);
+                        request.setCfname(fnamesel);
+                        request.setClname(lnamesel);
+                        request.setCname(namesel);
+                        request.setCtitle(titlesel);
+                        request.setOname(onamesel);
+                        request.setOclosedate(closesel);
+                        request.setOstagename(stagesel);
+                        convert(request);
+                    }
                 }
             }
         });
 
+        update.setVisibility(View.GONE);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flag == 0)
+                    Toast.makeText(getActivity(),"Create objects first",Toast.LENGTH_LONG).show();
+                else
+                    updateConvert();
+            }
+        });
         return v;
     }
 
     private void convert(LeadConvertRequest request){
-        Call<ApiStatus> call= ApiClient.getUserService().convertLead(request);
+
+       Call<ApiStatus> call= ApiClient.getUserService().convertLead(request);
         call.enqueue(new Callback<ApiStatus>() {
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Inserted successfully!",Toast.LENGTH_LONG).show();
-                    updateConvert();
+                    Toast.makeText(getActivity(),"Objects created successfully!",Toast.LENGTH_LONG).show();
+                    flag = 1;
+                    update.setVisibility(View.VISIBLE);
+                    convert.setVisibility(View.GONE);
                 }
                 else {
                     Toast.makeText(getActivity(),"Cannot insert "+response.code(),Toast.LENGTH_LONG).show();
@@ -169,11 +189,12 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
 
     private void updateConvert(){
         Call<ApiStatus> call= ApiClient.getUserService().updateConverted(anamesel,namesel,onamesel,lextid);
+
         call.enqueue(new Callback<ApiStatus>() {
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Updated successfully!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Converted successfully!",Toast.LENGTH_LONG).show();
                     fragmentTransaction.commit();
                 }
                 else {
@@ -187,6 +208,7 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
     }
+
 
     private void getData(){
         Call<LeadRequest> call= ApiClient.getUserService().leadDetails(lextid);
