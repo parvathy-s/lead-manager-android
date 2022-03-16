@@ -111,7 +111,7 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
             public void onClick(View v) {
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,contactFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
                 deleteData();
             }
         });

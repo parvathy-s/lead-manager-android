@@ -10,16 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,8 @@ public class AccountFragment extends Fragment {
     private AccountAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button add;
+    private long backPressedTime;
+    private Toast back;
 
 
     public static AccountFragment newInstance(String user){
@@ -46,6 +53,7 @@ public class AccountFragment extends Fragment {
         return accountFragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +62,7 @@ public class AccountFragment extends Fragment {
         if(getArguments() != null) {
             usr = getArguments().getString(ARG_USR);
         }
+
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -69,7 +78,27 @@ public class AccountFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
         return v;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(backPressedTime + 2000 > System.currentTimeMillis()){
+                    back.cancel();
+                    getActivity().finishAffinity();
+                } else{
+                    back =Toast.makeText(getActivity(),"Press again to exit",Toast.LENGTH_SHORT);
+                    back.show();
+                }
+                backPressedTime  = System.currentTimeMillis();
+            }
+        });
     }
 
     private void getDetails(){
@@ -88,6 +117,9 @@ public class AccountFragment extends Fragment {
                 for(AccountResponse accountResponse: accountResponses){
                     accountItems.add(new AccountItem(accountResponse.getName(),accountResponse.getAc_extid__c(),accountResponse.getType(),accountResponse.getIndustry()));
                 }
+
+                if(accountItems.size() == 0)
+                    Toast.makeText(getActivity(),"No accounts present",Toast.LENGTH_LONG).show();
 
                 adapter = new AccountAdapter(accountItems);
                 recyclerView.setLayoutManager(layoutManager);

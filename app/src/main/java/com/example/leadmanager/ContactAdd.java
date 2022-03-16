@@ -68,7 +68,7 @@ public class ContactAdd extends Fragment implements AdapterView.OnItemSelectedLi
 
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,contactFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
 
                     if (namesel.length() == 0 || titlesel.length() == 0 || phonesel.length() == 0 || emailsel.length() == 0){
                         Toast.makeText(getActivity(),"Enter all values", Toast.LENGTH_SHORT).show();

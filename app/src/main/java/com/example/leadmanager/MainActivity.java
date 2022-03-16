@@ -51,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
     public void onCheckLogin(View v){
 
         //Toast.makeText(this, "Username :"+username.getText().toString()+" Password :"+password.getText().toString(), Toast.LENGTH_SHORT).show();
-        checkUser(createRequest());
+        if(username.getText().toString().length() == 0 || password.getText().toString().length() == 0){
+            Toast.makeText(this,"Enter required values",Toast.LENGTH_LONG).show();
+        }
+        else
+            checkUser(createRequest());
     }
 
     public UserRequest createRequest(){

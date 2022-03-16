@@ -110,7 +110,7 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
             public void onClick(View v) {
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,leadFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
                 deleteData();
             }
         });

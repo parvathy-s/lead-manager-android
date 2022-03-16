@@ -89,10 +89,13 @@ public class OpportunityAdd extends Fragment implements AdapterView.OnItemSelect
 
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,opportunityFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
 
                 if(namesel.length() == 0 || amtsel.length() == 0 || closesel.length() == 0){
                     Toast.makeText(getActivity(),"Enter all values",Toast.LENGTH_LONG).show();
+                }
+                else if(contactsel.equals("")){
+                    Toast.makeText(getActivity(),"Create an associated contact",Toast.LENGTH_LONG).show();
                 }
                 else{
                     OpportunityRequest request= new OpportunityRequest();
@@ -178,6 +181,7 @@ public class OpportunityAdd extends Fragment implements AdapterView.OnItemSelect
                     List<ContactAccount> contactList = response.body();
                     if(contactList.size() == 0){
                         Toast.makeText(getActivity(),"No associated contacts with this account",Toast.LENGTH_LONG).show();
+                        contactsel="";
                     }
                         for(ContactAccount contact: contactList){
                             cname.add(contact.getName());

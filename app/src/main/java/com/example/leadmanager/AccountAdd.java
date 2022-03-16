@@ -63,7 +63,7 @@ public class AccountAdd extends Fragment implements AdapterView.OnItemSelectedLi
 
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,accountFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
 
 
                 if (namesel.length() == 0 || descsel.length() == 0 || phonesel.length() == 0)

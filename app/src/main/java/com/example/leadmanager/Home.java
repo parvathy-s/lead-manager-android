@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -21,6 +22,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private DrawerLayout drawer;
     private String isLoggedIn;
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +41,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         SessionManagement sessionManagement = new SessionManagement(Home.this);
         isLoggedIn = sessionManagement.getSession();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(navListener);
 
         AccountFragment accountFragment = AccountFragment.newInstance(isLoggedIn);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,accountFragment).commit();
     }
+
 
     private BottomNavigationView.OnItemSelectedListener navListener =
             new BottomNavigationView.OnItemSelectedListener() {
@@ -56,19 +59,25 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     switch (item.getItemId()){
                         case R.id.nav_account:
                             selectedFragment = AccountFragment.newInstance(username);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                    selectedFragment).commit();
                             break;
                         case R.id.nav_contact:
                             selectedFragment = ContactFragment.newInstance(username);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                    selectedFragment).addToBackStack(null).commit();
                             break;
                         case R.id.nav_opportunity:
                             selectedFragment =OpportunityFragment.newInstance(username);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                    selectedFragment).addToBackStack(null).commit();
                             break;
                         case R.id.nav_lead:
                             selectedFragment = LeadFragment.newInstance(username);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                    selectedFragment).addToBackStack(null).commit();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).addToBackStack(null).commit();
                     return true;
                 }
             };

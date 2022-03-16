@@ -100,7 +100,7 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
 
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,accountFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
 
                 deleteData();
             }

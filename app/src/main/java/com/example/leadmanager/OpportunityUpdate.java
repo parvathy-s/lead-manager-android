@@ -138,7 +138,7 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
             public void onClick(View v) {
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,opportunityFragment);
-                fragmentTransaction.addToBackStack(null);
+                //fragmentTransaction.addToBackStack(null);
                 deleteData();
             }
         });
