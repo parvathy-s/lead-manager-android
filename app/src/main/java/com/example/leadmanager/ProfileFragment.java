@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ public class ProfileFragment extends Fragment {
     private String usr;
     private TextView txt;
     private TextView username,firstname,lastname,email,phone;
+    private ProgressDialog progressDialog;
 
     public static ProfileFragment newInstance(String user){
         ProfileFragment profileFragment= new ProfileFragment();
@@ -51,6 +53,10 @@ public class ProfileFragment extends Fragment {
             usr = getArguments().getString(ARG_USR);
             username.setText(usr);
         }
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         getDetails();
         return v;
     }
@@ -67,6 +73,8 @@ public class ProfileFragment extends Fragment {
                         lastname.setText(jsonObject.getString("lastname"));
                         email.setText(jsonObject.getString("email"));
                         phone.setText(jsonObject.getString("phone"));
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
                     }
                     catch (Exception e){
                         e.printStackTrace();
@@ -80,6 +88,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<UserInfo> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 txt.setText(t.getLocalizedMessage());
             }
         });

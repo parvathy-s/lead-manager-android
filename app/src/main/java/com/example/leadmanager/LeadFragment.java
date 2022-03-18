@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +35,7 @@ public class LeadFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     ArrayList<LeadResponse> leadItems;
     private Button add;
+    private ProgressDialog progressDialog;
 
     public static LeadFragment newInstance(String user){
         LeadFragment leadFragment= new LeadFragment();
@@ -56,6 +58,10 @@ public class LeadFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         getDetails();
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +97,10 @@ public class LeadFragment extends Fragment {
                             leadResponse.getStatus()
                     ));
                 }
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+                if(leadItems.size() == 0)
+                    Toast.makeText(getActivity(),"No leads present",Toast.LENGTH_LONG).show();
 
                 adapter = new LeadAdapter(leadItems);
                 recyclerView.setLayoutManager(layoutManager);
@@ -113,6 +123,8 @@ public class LeadFragment extends Fragment {
             @Override
             public void onFailure(Call<List<LeadResponse>> call, Throwable t) {
 
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         });
     }

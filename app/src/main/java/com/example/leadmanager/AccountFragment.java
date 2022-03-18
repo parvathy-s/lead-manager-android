@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +44,7 @@ public class AccountFragment extends Fragment {
     private Button add;
     private long backPressedTime;
     private Toast back;
-
+    private ProgressDialog progressDialog;
 
     public static AccountFragment newInstance(String user){
         AccountFragment accountFragment= new AccountFragment();
@@ -66,6 +68,11 @@ public class AccountFragment extends Fragment {
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
         getDetails();
 
         add= v.findViewById(R.id.new_acc);
@@ -118,6 +125,8 @@ public class AccountFragment extends Fragment {
                     accountItems.add(new AccountItem(accountResponse.getName(),accountResponse.getAc_extid__c(),accountResponse.getType(),accountResponse.getIndustry()));
                 }
 
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 if(accountItems.size() == 0)
                     Toast.makeText(getActivity(),"No accounts present",Toast.LENGTH_LONG).show();
 
@@ -140,6 +149,8 @@ public class AccountFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<AccountResponse>> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

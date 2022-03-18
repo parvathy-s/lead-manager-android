@@ -1,6 +1,7 @@
 package com.example.leadmanager;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
     FragmentTransaction fragmentTransaction;
     String anamesel,fnamesel,lnamesel,namesel,titlesel,onamesel,closesel,typesel,industrysel,stagesel, lextid;
     final Calendar myCalendar= Calendar.getInstance();
+    private ProgressDialog progressDialog;
 
     public static LeadConvert newInstance(String lid){
         LeadConvert leadConvert= new LeadConvert();
@@ -113,6 +115,10 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
             }
         });
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         getData();
 
         convert.setOnClickListener(new View.OnClickListener() {
@@ -194,7 +200,7 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Converted successfully!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Converted successfully! Salesforce is working in background, changes can take upto 10 mins to take effect",Toast.LENGTH_LONG).show();
                     fragmentTransaction.commit();
                 }
                 else {
@@ -222,6 +228,8 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
                         lname.setText(jsonObject.getString("lastname"));
                         aname.setText(jsonObject.getString("company"));
                         title.setText(jsonObject.getString("title"));
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -233,6 +241,8 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
 
             @Override
             public void onFailure(Call<LeadRequest> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

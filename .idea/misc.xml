@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/botton_bg.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/circle.xml" value="0.2203125" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/edittxt_bg.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/ic_account.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/drawable/ic_contact.xml" value="0.18888888888888888" />
@@ -19,7 +20,7 @@
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/contact_add.xml" value="0.20416666666666666" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/contact_item.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/contact_update.xml" value="0.20416666666666666" />
-        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_account.xml" value="0.1" />
+        <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_account.xml" value="0.22" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_contact.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_lead.xml" value="0.1" />
         <entry key="..\:/Rajagiri/Sem 6/Lead Manager App/app/src/main/res/layout/fragment_opportunity.xml" value="0.1" />

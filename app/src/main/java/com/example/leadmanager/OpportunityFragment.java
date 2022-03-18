@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ public class OpportunityFragment extends Fragment {
     private RecyclerView recyclerView;
     private OpportunityAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ProgressDialog progressDialog;
 
     public static OpportunityFragment newInstance(String user){
         OpportunityFragment opportunityFragment= new OpportunityFragment();
@@ -54,6 +56,10 @@ public class OpportunityFragment extends Fragment {
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
 
         getData();
 
@@ -85,6 +91,10 @@ public class OpportunityFragment extends Fragment {
                 for(OpportunityResponse opportunityResponse: opportunityResponses){
                     opportunityItems.add(new OpportunityResponse(opportunityResponse.getO_extid__c(),opportunityResponse.getOname(),opportunityResponse.getAname(),opportunityResponse.getStagename()));
                 }
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+                if(opportunityItems.size() == 0)
+                    Toast.makeText(getActivity(),"No Opportunities present",Toast.LENGTH_LONG).show();
                 adapter = new OpportunityAdapter(opportunityItems);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
@@ -104,6 +114,8 @@ public class OpportunityFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<OpportunityResponse>> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
     ArrayAdapter<CharSequence> statusAdapter;
     FragmentTransaction fragmentTransaction;
     String fnamesel, lnamesel, namesel, companysel, emailsel, titlesel, statussel, lextid;
+    private ProgressDialog progressDialog;
 
     public static LeadUpdate newInstance(String lid){
         LeadUpdate leadUpdate= new LeadUpdate();
@@ -132,6 +134,10 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
             }
         });
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         getData();
 
         return v;
@@ -195,6 +201,8 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
                         System.out.println(statuspos);
                         status.setSelection(statuspos);
 
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -206,6 +214,8 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
 
             @Override
             public void onFailure(Call<LeadRequest> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

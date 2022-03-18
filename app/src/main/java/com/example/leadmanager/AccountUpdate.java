@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
     FragmentTransaction fragmentTransaction;
     String typesel,industrysel, namesel,descsel, phonesel;
     ArrayAdapter<CharSequence> typeAdapter,industryAdapter;
+    private ProgressDialog progressDialog;
 
     public static AccountUpdate newInstance(String accid){
         AccountUpdate accountUpdate= new AccountUpdate();
@@ -75,6 +77,10 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
         isLoggedIn = sessionManagement.getSession();
         accountFragment = AccountFragment.newInstance(isLoggedIn);
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         getData();
 
         update.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +164,8 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onResponse(Call<AccountRequest> call, Response<AccountRequest> response) {
                 if(response.isSuccessful()) {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
                     try {
                         JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                         name.setText(jsonObject.getString("name"));
@@ -187,6 +195,8 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
 
             @Override
             public void onFailure(Call<AccountRequest> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

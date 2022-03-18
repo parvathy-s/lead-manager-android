@@ -1,5 +1,6 @@
 package com.example.leadmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
     List<String> aname;
     List<String> aid;
     ArrayAdapter<String> dataAdapter;
+    private ProgressDialog progressDialog;
 
     public static ContactUpdate newInstance(String cid){
         ContactUpdate contactUpdate= new ContactUpdate();
@@ -71,6 +73,10 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
 
         account.setOnItemSelectedListener(this);
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         setSpinner();
 
         update.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +221,8 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
                         System.out.println(pos);
                         account.setSelection(pos);
 
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -226,6 +234,8 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
 
             @Override
             public void onFailure(Call<ContactRequest> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

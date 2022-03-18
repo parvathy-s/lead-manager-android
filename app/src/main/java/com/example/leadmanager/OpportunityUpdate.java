@@ -1,6 +1,7 @@
 package com.example.leadmanager;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,7 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
     List<String> aname,aid, cname, cid;
     ArrayAdapter<CharSequence> stageAdapter;
     final Calendar myCalendar= Calendar.getInstance();
+    private ProgressDialog progressDialog;
 
     public static OpportunityUpdate newInstance(String oid){
         OpportunityUpdate opportunityUpdate=new OpportunityUpdate();
@@ -103,6 +105,10 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
             }
         });
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         setAccount();
 
         update.setOnClickListener(new View.OnClickListener() {
@@ -287,6 +293,8 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
                         int cpos = cid.indexOf(conid);
                         contact.setSelection(cpos);
 
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -298,6 +306,8 @@ public class OpportunityUpdate extends Fragment implements AdapterView.OnItemSel
 
             @Override
             public void onFailure(Call<OpportunityInfo> call, Throwable t) {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getActivity(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });
