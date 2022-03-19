@@ -1,6 +1,8 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
     String typesel,industrysel, namesel,descsel, phonesel;
     ArrayAdapter<CharSequence> typeAdapter,industryAdapter;
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
 
     public static AccountUpdate newInstance(String accid){
         AccountUpdate accountUpdate= new AccountUpdate();
@@ -58,6 +61,7 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
         phone = v.findViewById(R.id.accphone);
         desc = v.findViewById(R.id.accdesc);
         delete = v.findViewById(R.id.accdelete);
+        builder = new AlertDialog.Builder(getContext());
 
         if(getArguments() != null) {
             accid = getArguments().getString(ARG_ID);
@@ -108,7 +112,25 @@ public class AccountUpdate extends Fragment implements AdapterView.OnItemSelecte
                 fragmentTransaction.replace(R.id.fragment_container,accountFragment);
                 //fragmentTransaction.addToBackStack(null);
 
-                deleteData();
+                builder.setMessage("All related contacts and opportunities will be deleted. Are you sure you want to delete this record ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteData();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("Delete Account");
+                alert.show();
+
             }
         });
 

@@ -1,6 +1,8 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,7 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
     List<String> aid;
     ArrayAdapter<String> dataAdapter;
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
 
     public static ContactUpdate newInstance(String cid){
         ContactUpdate contactUpdate= new ContactUpdate();
@@ -62,6 +65,7 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
         account = v.findViewById(R.id.acc_con);
         update = v.findViewById(R.id.conupdate);
         delete = v.findViewById(R.id.condelete);
+        builder = new AlertDialog.Builder(getContext());
 
         if(getArguments() != null) {
             cid = getArguments().getString(ARG_ID);
@@ -118,7 +122,25 @@ public class ContactUpdate extends Fragment implements AdapterView.OnItemSelecte
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,contactFragment);
                 //fragmentTransaction.addToBackStack(null);
-                deleteData();
+
+                builder.setMessage("All related opportunities will be deleted. Are you sure you want to delete this record ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteData();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("Delete Contact");
+                alert.show();
             }
         });
         return v;

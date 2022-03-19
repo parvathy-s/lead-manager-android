@@ -1,5 +1,7 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,7 @@ public class ContactAdd extends Fragment implements AdapterView.OnItemSelectedLi
     String namesel, fnamesel, lnamesel, titlesel, phonesel, emailsel, acsel;
     List<String> aname;
     List<String> aid;
+    private AlertDialog.Builder builder;
 
     @Nullable
     @Override
@@ -46,6 +49,7 @@ public class ContactAdd extends Fragment implements AdapterView.OnItemSelectedLi
         email = v.findViewById(R.id.email_con);
         account = v.findViewById(R.id.acc_con);
         save = v.findViewById(R.id.consave);
+        builder = new AlertDialog.Builder(getContext());
 
         SessionManagement sessionManagement = new SessionManagement(getContext());
         isLoggedIn = sessionManagement.getSession();
@@ -102,8 +106,19 @@ public class ContactAdd extends Fragment implements AdapterView.OnItemSelectedLi
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Saved successfully",Toast.LENGTH_LONG).show();
-                    fragmentTransaction.commit();
+                    builder.setMessage("Salesforce is working in the background. Please wait for the changes to take effect")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    fragmentTransaction.commit();
+                                }
+                            });
+
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.setTitle("Create Contact");
+                    alert.show();
                 }
                 else
                 {

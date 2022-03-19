@@ -1,5 +1,7 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ public class LeadAdd extends Fragment implements AdapterView.OnItemSelectedListe
     LeadFragment leadFragment;
     FragmentTransaction fragmentTransaction;
     String fnamesel, lnamesel, namesel, companysel, emailsel, titlesel, statussel;
+    private AlertDialog.Builder builder;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class LeadAdd extends Fragment implements AdapterView.OnItemSelectedListe
         email = v.findViewById(R.id.lead_email);
         title = v.findViewById(R.id.lead_title);
         status = v.findViewById(R.id.lead_status);
+        builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> statusAdapter = ArrayAdapter.createFromResource(getContext(),R.array.status, android.R.layout.simple_spinner_item);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -66,6 +70,9 @@ public class LeadAdd extends Fragment implements AdapterView.OnItemSelectedListe
 
                 if(namesel.length() == 0 || companysel.length() == 0 || emailsel.length() == 0 || titlesel.length() == 0)
                     Toast.makeText(getActivity(), "Enter all values", Toast.LENGTH_SHORT).show();
+                else if(statussel.equals("Closed - Converted")){
+                    Toast.makeText(getActivity(),"Lead cannot be closed at the initial stage",Toast.LENGTH_LONG).show();
+                }
                 else{
                     if(emailsel.matches(emailPattern)){
                         LeadRequest request= new LeadRequest();
@@ -92,8 +99,19 @@ public class LeadAdd extends Fragment implements AdapterView.OnItemSelectedListe
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Successfully saved, please wait for the changes to take effect",Toast.LENGTH_LONG).show();
-                    fragmentTransaction.commit();
+                    builder.setMessage("Salesforce is working in the background. Please wait for the changes to take effect")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    fragmentTransaction.commit();
+                                }
+                            });
+
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.setTitle("Create Lead");
+                    alert.show();
                 }
                 else {
                     Toast.makeText(getActivity(),"Cannot save "+response.code(),Toast.LENGTH_LONG).show();

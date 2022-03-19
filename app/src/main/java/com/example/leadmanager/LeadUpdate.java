@@ -1,6 +1,9 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +39,7 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
     FragmentTransaction fragmentTransaction;
     String fnamesel, lnamesel, namesel, companysel, emailsel, titlesel, statussel, lextid;
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
 
     public static LeadUpdate newInstance(String lid){
         LeadUpdate leadUpdate= new LeadUpdate();
@@ -58,6 +62,7 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
         email = v.findViewById(R.id.lead_email);
         title = v.findViewById(R.id.lead_title);
         status = v.findViewById(R.id.lead_status);
+        builder = new AlertDialog.Builder(getContext());
 
         if(getArguments() != null) {
             lextid = getArguments().getString(ARG_ID);
@@ -113,7 +118,26 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
                 fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container,leadFragment);
                 //fragmentTransaction.addToBackStack(null);
-                deleteData();
+
+                builder.setMessage("Are you sure you want to delete this record ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteData();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //  Action for 'NO' Button
+                                dialog.cancel();
+                            }
+                        });
+                //Creating dialog box
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("Delete Lead");
+                alert.show();
+
             }
         });
 
@@ -139,7 +163,6 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
         progressDialog.setMessage("Loading...");
         progressDialog.show();
         getData();
-
         return v;
     }
 
@@ -204,6 +227,7 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
 
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -224,6 +248,10 @@ public class LeadUpdate extends Fragment implements AdapterView.OnItemSelectedLi
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         statussel = parent.getItemAtPosition(position).toString();
+        if(statussel.equals("Closed - Converted")){
+            update.setBackgroundResource(R.drawable.botton_unselect);
+            convert.setBackgroundResource(R.drawable.botton_unselect);
+        }
     }
 
     @Override

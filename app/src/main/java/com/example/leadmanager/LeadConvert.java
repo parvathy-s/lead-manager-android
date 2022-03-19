@@ -1,7 +1,9 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
     String anamesel,fnamesel,lnamesel,namesel,titlesel,onamesel,closesel,typesel,industrysel,stagesel, lextid;
     final Calendar myCalendar= Calendar.getInstance();
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder builder;
 
     public static LeadConvert newInstance(String lid){
         LeadConvert leadConvert= new LeadConvert();
@@ -70,6 +73,7 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
         title = v.findViewById(R.id.leadcon_title);
         oname = v.findViewById(R.id.leadcon_op);
         closedate = v.findViewById(R.id.leadcon_close);
+        builder = new AlertDialog.Builder(getContext());
 
         if(getArguments() != null) {
             lextid = getArguments().getString(ARG_ID);
@@ -200,8 +204,19 @@ public class LeadConvert extends Fragment implements AdapterView.OnItemSelectedL
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Converted successfully! Salesforce is working in background, changes can take upto 10 mins to take effect",Toast.LENGTH_LONG).show();
-                    fragmentTransaction.commit();
+                    builder.setMessage("Salesforce is working in the background. Please wait for the changes to take effect")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    fragmentTransaction.commit();
+                                }
+                            });
+
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.setTitle("Convert Lead");
+                    alert.show();
                 }
                 else {
                     Toast.makeText(getActivity(),"Cannot update "+response.code(),Toast.LENGTH_LONG).show();

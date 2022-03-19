@@ -1,5 +1,7 @@
 package com.example.leadmanager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ public class AccountAdd extends Fragment implements AdapterView.OnItemSelectedLi
     AccountFragment accountFragment;
     FragmentTransaction fragmentTransaction;
     String typesel,industrysel, namesel,descsel, phonesel;
+    private AlertDialog.Builder builder;
 
     @Nullable
     @Override
@@ -39,6 +42,7 @@ public class AccountAdd extends Fragment implements AdapterView.OnItemSelectedLi
         name = v.findViewById(R.id.accname);
         phone = v.findViewById(R.id.accphone);
         desc = v.findViewById(R.id.accdesc);
+        builder = new AlertDialog.Builder(getContext());
 
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(getContext(),R.array.account_type, android.R.layout.simple_spinner_item);
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -93,8 +97,21 @@ public class AccountAdd extends Fragment implements AdapterView.OnItemSelectedLi
             @Override
             public void onResponse(Call<ApiStatus> call, Response<ApiStatus> response) {
                 if(response.isSuccessful()){
-                    Toast.makeText(getActivity(),"Successfully saved, please wait for the changes to take effect",Toast.LENGTH_LONG).show();
-                    fragmentTransaction.commit();
+                    //Toast.makeText(getActivity(),"Successfully saved, please wait for the changes to take effect",Toast.LENGTH_LONG).show();
+                    builder.setMessage("Salesforce is working in the background. Please wait for the changes to take effect")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    fragmentTransaction.commit();
+                                }
+                            });
+
+                    //Creating dialog box
+                    AlertDialog alert = builder.create();
+                    //Setting the title manually
+                    alert.setTitle("Create Account");
+                    alert.show();
+
                 }
                 else {
                     Toast.makeText(getActivity(),"Cannot save "+response.code(),Toast.LENGTH_LONG).show();
